@@ -2,467 +2,711 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>MABAR MINECRAFT BEDROCK · 真 · 墨 (RESPONSIVE)</title>
-    <!-- favicon sesuai file "kstw.jpeg" -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>墨 CRAFT · BEDROCK MANGA</title>
     <link rel="icon" type="image/jpeg" href="kstw.jpeg">
     <style>
-        /* ===== RESET & VARIABEL ===== */
+        /* ROOT VARIABLES FOR EASY THEME COLOR CHANGES */
+        :root {
+            /* Main color palette - change these to recolor entire site */
+            --primary-bg: #ffffff;
+            --secondary-bg: #f0f0f0;
+            --border-light: #d0d0d0;
+            --border-medium: #bbbbbb;
+            --border-dark: #aaaaaa;
+            --border-darker: #999999;
+            --border-deep: #888888;
+            --text-primary: #000000;
+            --text-secondary: #222222;
+            --text-muted: #333333;
+            --text-subtle: #444444;
+            --shadow-color: #cccccc;
+            --shadow-darker: #666666;
+            --accent-light: #e0e0e0;
+            
+            /* Overlay opacity for background visibility */
+            --card-opacity: 0.85;
+            --element-opacity: 0.9;
+            --badge-opacity: 0.95;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', 'MS Gothic', 'BIZ UDGothic', 'Segoe UI', monospace;
         }
 
         body {
-            /* background 4k 9:16 - file bg.png */
             background-image: url('bg.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            background-repeat: no-repeat;
             min-height: 100vh;
-            
-            /* FILTER HITAM PUTIH TOTAL (manga style) */
-            filter: grayscale(100%) contrast(1.1);
-            
-            color: #111;
+            filter: grayscale(100%) contrast(1.1) brightness(1.2);
+            font-family: 'Bebas Neue', 'Impact', 'Arial Black', 'Courier New', sans-serif;
             position: relative;
-            padding-bottom: 2rem;
-            
-            /* smooth font di hp */
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* overlay tipis biar teks tetap terbaca di semua layar */
-        body::before {
+        /* efek screen tone manga */
+        body::after {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(20, 20, 20, 0.25);
-            backdrop-filter: grayscale(0.8) blur(0.5px);
+            background: repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 3px, transparent 3px, transparent 10px);
             pointer-events: none;
-            z-index: -1;
+            z-index: 999;
         }
 
-        /* ===== NAVBAR FLEKSIBEL ===== */
-        .navbar {
-            background: #0f0f0f;
-            border-bottom: 4px solid #333;
-            box-shadow: 0 6px 0 #0a0a0a;
-            padding: 0.7rem 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 0.8rem 1.8rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        /* NAVBAR with root variables */
+        .manga-header {
             position: sticky;
             top: 0;
             z-index: 100;
+            background: var(--primary-bg);
+            border-bottom: 6px solid var(--border-light);
+            padding: 0.8rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 10px 0 var(--accent-light);
+            opacity: var(--element-opacity);
         }
 
-        .navbar a {
-            color: #f0f0f0;
+        .logo-manga {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            text-shadow: 4px 4px 0 var(--border-light);
+            letter-spacing: 5px;
+            background: var(--secondary-bg);
+            padding: 0.2rem 1rem;
+            border: 3px solid var(--border-deep);
+            transform: skew(-5deg);
+            display: inline-block;
+            opacity: var(--card-opacity);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: clamp(1rem, 4vw, 1.5rem);
-            padding: 0.3rem 0.2rem;
-            border-bottom: 3px solid transparent;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 0.5rem 1.5rem;
+            background: var(--secondary-bg);
+            border: 3px solid var(--border-dark);
+            transform: skew(-5deg);
             transition: 0.2s;
-            font-family: 'Impact', 'Arial Black', 'Courier New', sans-serif;
-            text-shadow: 2px 2px 0 #3f3f3f;
-            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: var(--badge-opacity);
         }
 
-        .navbar a:hover {
-            border-bottom-color: #ffffff;
-            background: #333;
-            transform: scale(1.05);
+        .nav-item:hover {
+            background: var(--text-primary);
+            color: var(--primary-bg);
+            border-color: var(--text-primary);
+            transform: skew(-5deg) scale(1.05);
+            opacity: 1;
         }
 
-        /* ===== KONTEN UTAMA - RESPONSIVE GRID ===== */
-        .content {
+        /* layout majalah */
+        .magazine-layout {
             max-width: 1400px;
-            width: 95%;
+            width: 90%;
             margin: 2rem auto;
-            padding: 0.5rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        /* panel kiri */
+        .main-panel {
             display: flex;
             flex-direction: column;
             gap: 2rem;
         }
 
-        /* panel dasar */
-        .menu-panel {
-            background: rgba(20, 20, 20, 0.85);
-            backdrop-filter: grayscale(1) blur(2px);
-            border: 3px solid #2b2b2b;
-            box-shadow: 10px 10px 0 rgba(0,0,0,0.6);
-            padding: clamp(1.2rem, 5vw, 2.5rem);
-            color: #ddd;
-            border-radius: 8px;
-            transition: 0.2s;
-            width: 100%;
-        }
-
-        .menu-panel:hover {
-            box-shadow: 6px 6px 0 #4a4a4a;
-            border-color: #8a8a8a;
-        }
-
-        h2 {
-            font-size: clamp(1.8rem, 7vw, 3rem);
-            font-weight: 900;
-            letter-spacing: 4px;
-            margin-bottom: 1rem;
-            border-left: 12px solid #888;
-            padding-left: 1rem;
-            text-transform: uppercase;
-            color: #fff;
-            text-shadow: 3px 3px 0 #000;
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            word-break: break-word;
-        }
-
-        hr.sep {
-            border: 1px dashed #5a5a5a;
-            margin: 1.5rem 0;
-        }
-
-        /* ===== TOMBOL SOSMED ===== */
-        .social-buttons {
+        /* panel kanan */
+        .sidebar-panel {
             display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1.2rem;
-            justify-content: flex-start;
-        }
-
-        .social-btn {
-            background: #2b2b2b;
-            color: #eaeaea;
-            border: 2px solid #777;
-            padding: 0.7rem 1.5rem;
-            font-weight: bold;
-            font-size: clamp(0.9rem, 4vw, 1.3rem);
-            text-decoration: none;
-            text-transform: uppercase;
-            box-shadow: 5px 5px 0 #1a1a1a;
-            transition: 0.15s;
-            display: inline-block;
-            letter-spacing: 1.5px;
-            flex: 0 1 auto;
-        }
-
-        .social-btn:hover {
-            background: #ececec;
-            color: #111;
-            border-color: #111;
-            box-shadow: 2px 2px 0 #3f3f3f;
-        }
-
-        /* ===== IP / PORT ===== */
-        .server-address {
-            background: #0f0f0f;
-            padding: 1rem 1.5rem;
-            border: 3px solid #6d6d6d;
-            display: inline-block;
-            font-size: clamp(1.2rem, 5vw, 2.2rem);
-            font-weight: 900;
-            color: #b1b1b1;
-            font-family: 'Courier New', monospace;
-            box-shadow: inset 0 0 0 2px #2b2b2b;
-            letter-spacing: 2px;
-            max-width: 100%;
-            word-break: break-word;
-        }
-
-        /* ===== SPESIFIKASI GRID ===== */
-        .spec-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            font-size: clamp(1rem, 3.5vw, 1.3rem);
-        }
-
-        .spec-item {
-            background: #202020;
-            border: 2px solid #5a5a5a;
-            padding: 1.5rem 1rem;
-            text-align: center;
-            font-weight: bold;
-            color: #ccc;
-            box-shadow: 6px 6px 0 #0a0a0a;
-        }
-
-        .spec-item strong {
-            display: block;
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            color: white;
-            border-bottom: 2px dotted #777;
-            margin-bottom: 0.7rem;
-            word-break: break-word;
-        }
-
-        /* ===== CONTACT AREA - FLEX RESPONSIVE ===== */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            flex-direction: column;
             gap: 2rem;
         }
 
-        .contact-card {
-            background: #1d1d1d;
-            border: 2px solid #4f4f4f;
+        /* card dengan opacity rendah agar background terlihat */
+        .manga-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(5px) grayscale(100%);
+            border: 4px solid var(--border-dark);
+            padding: 2rem;
+            box-shadow: 15px 15px 0 var(--shadow-color);
+            position: relative;
+        }
+
+        .manga-card::before {
+            content: "";
+            position: absolute;
+            top: 10px; right: 10px;
+            width: 30px; height: 30px;
+            border-top: 4px solid var(--border-medium);
+            border-right: 4px solid var(--border-medium);
+        }
+
+        .card-title {
+            font-size: 2.8rem;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            border-left: 15px solid var(--border-dark);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-shadow: 3px 3px 0 var(--accent-light);
+        }
+
+        /* maskot terintegrasi dengan opacity */
+        .manga-mascot {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            background: var(--secondary-bg);
+            border: 5px solid var(--border-medium);
             padding: 1.5rem;
-            box-shadow: 8px 8px 0 #000;
-            height: fit-content;
+            margin-top: 1rem;
+            opacity: var(--card-opacity);
         }
 
-        .contact-card h3 {
-            font-size: clamp(1.4rem, 5vw, 2rem);
-            border-bottom: 5px solid #6f6f6f;
-            margin-bottom: 1.2rem;
-            color: #f0f0f0;
+        .mascot-image {
+            width: 150px;
+            height: 150px;
+            border: 4px solid var(--border-darker);
+            transform: rotate(-2deg);
+            box-shadow: 10px 10px 0 var(--shadow-color);
+            background-color: var(--secondary-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.9rem;
+            text-align: center;
         }
 
-        .feedback-input {
-            background: #2b2b2b;
-            border: 2px solid #5e5e5e;
-            color: #eee;
-            padding: 0.8rem;
+        .mascot-image img {
             width: 100%;
-            margin: 1rem 0 0.5rem;
-            font-size: clamp(0.9rem, 4vw, 1.1rem);
-            resize: vertical;
-            min-height: 80px;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            display: block;
         }
 
+        .mascot-text {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-style: italic;
+            border-left: 5px solid var(--border-dark);
+            padding-left: 1rem;
+        }
+
+        /* spec badge dengan opacity */
+        .spec-badge {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .badge {
+            background: var(--secondary-bg);
+            border: 3px solid var(--border-dark);
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            box-shadow: 5px 5px 0 var(--shadow-color);
+            opacity: var(--badge-opacity);
+        }
+
+        .badge strong {
+            display: block;
+            font-size: 1.6rem;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-medium);
+            margin-bottom: 0.5rem;
+        }
+
+        /* operator list */
         .operator-list {
             list-style: none;
         }
 
         .operator-list li {
-            padding: 0.6rem 0;
-            border-bottom: 2px dotted #4b4b4b;
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            font-weight: 600;
-            color: #cacaca;
-            word-break: break-word;
+            padding: 0.8rem;
+            border-bottom: 3px dotted var(--border-medium);
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .operator-list li::before {
-            content: "⚡ ";
-            color: #aaa;
-            font-weight: normal;
+            content: "⚡";
+            color: #666666;
+            font-size: 1.5rem;
         }
 
-        /* ===== POP-UP GAMBAR KIRI BAWAH (FIXED, TIDAK BISA DIHAPUS) ===== */
-        .fixed-pop {
-            position: fixed;
-            bottom: 15px;
-            left: 15px;
-            width: min(297px, 30vw);   /* 595/2 = 297.5, tapi dibatasi agar tidak terlalu besar di hp */
-            max-width: 250px;           /* lebih proporsional di hp */
+        /* tombol sosmed dengan opacity */
+        .social-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1.5rem 0;
+        }
+
+        .social-btn-manga {
+            background: var(--secondary-bg);
+            color: var(--text-secondary);
+            border: 3px solid var(--border-darker);
+            padding: 0.8rem 2rem;
+            font-size: 1.3rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            box-shadow: 5px 5px 0 var(--shadow-color);
+            transition: 0.2s;
+            flex: 1;
+            text-align: center;
             min-width: 120px;
-            z-index: 9999;
-            pointer-events: none;       /* tidak mengganggu klik */
-            filter: grayscale(100%) drop-shadow(0 0 8px black);
-            opacity: 0.95;
-            border: 4px solid #222;
-            box-shadow: 12px 12px 0 #0f0f0f;
-            transition: none;
+            opacity: var(--badge-opacity);
         }
 
-        .fixed-pop img {
+        .social-btn-manga:hover {
+            background: var(--text-primary);
+            color: var(--primary-bg);
+            border-color: var(--text-primary);
+            box-shadow: 5px 5px 0 var(--shadow-darker);
+            opacity: 1;
+        }
+
+        /* ip box dengan opacity */
+        .ip-box {
+            background: var(--secondary-bg);
+            border: 5px solid var(--border-dark);
+            padding: 1.5rem;
+            font-size: 1.8rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+            text-align: center;
+            box-shadow: 8px 8px 0 var(--shadow-color);
+            word-break: break-word;
+            opacity: var(--card-opacity);
+            margin-bottom: 1rem;
+        }
+
+        /* Style untuk form dan input */
+        .feedback-form {
             width: 100%;
-            height: auto;
-            display: block;
-            aspect-ratio: 595 / 626;   /* menjaga proporsi asli */
         }
 
-        /* penyesuaian untuk layar sangat kecil */
-        @media (max-width: 480px) {
-            .fixed-pop {
-                width: 120px;
-                bottom: 10px;
-                left: 10px;
-                border-width: 3px;
-                box-shadow: 6px 6px 0 #0f0f0f;
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--secondary-bg);
+            border: 3px solid var(--border-dark);
+            color: var(--text-secondary);
+            padding: 0.8rem;
+            font-size: 1rem;
+            opacity: var(--badge-opacity);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--text-primary);
+            opacity: 1;
+        }
+
+        .feedback-textarea {
+            width: 100%;
+            background: var(--secondary-bg);
+            border: 3px solid var(--border-dark);
+            color: var(--text-secondary);
+            padding: 0.8rem;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            opacity: var(--badge-opacity);
+        }
+
+        .feedback-textarea:focus {
+            outline: none;
+            border-color: var(--text-primary);
+            opacity: 1;
+        }
+
+        .submit-btn {
+            background: var(--secondary-bg);
+            color: var(--text-secondary);
+            border: 3px solid var(--border-darker);
+            padding: 0.8rem 2rem;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            box-shadow: 5px 5px 0 var(--shadow-color);
+            transition: 0.2s;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--text-primary);
+            color: var(--primary-bg);
+            border-color: var(--text-primary);
+            box-shadow: 5px 5px 0 var(--shadow-darker);
+            opacity: 1;
+        }
+
+        /* Style untuk form status */
+        .form-status {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            font-size: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .form-status.success {
+            color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid #28a745;
+        }
+
+        .form-status.error {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid #dc3545;
+        }
+
+        /* responsive */
+        @media (max-width: 900px) {
+            .magazine-layout {
+                grid-template-columns: 1fr;
             }
             
-            .navbar a {
-                white-space: normal;
+            .manga-mascot {
+                flex-direction: column;
                 text-align: center;
-                font-size: 0.9rem;
+            }
+            
+            .logo-manga {
+                font-size: 1.8rem;
+            }
+            
+            .nav-item {
+                font-size: 1rem;
+                padding: 0.4rem 1rem;
             }
         }
 
-        /* untuk tablet */
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .fixed-pop {
-                width: 220px;
+        @media (max-width: 600px) {
+            .manga-header {
+                flex-direction: column;
+                gap: 0.5rem;
             }
-        }
-
-        /* monitor besar > 1440px */
-        @media (min-width: 1440px) {
-            .content {
-                max-width: 1600px;
+            
+            .card-title {
+                font-size: 2rem;
             }
-            .fixed-pop {
-                width: 297px;  /* ukuran asli proporsional */
-                bottom: 30px;
-                left: 30px;
-            }
-        }
-
-        /* tambahan smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* utility */
-        .text-small {
-            font-size: clamp(0.8rem, 3vw, 1rem);
         }
     </style>
 </head>
 <body>
-    <!-- NAVBAR responsif -->
-    <nav class="navbar">
-        <a href="#home">🏠 home</a>
-        <a href="#port">📡 port</a>
-        <a href="#spec">⚙ specification</a>
-        <a href="#contact">✉ contact</a>
-    </nav>
-
-    <!-- konten utama -->
-    <div class="content">
-        <!-- [home] nama server, penjelasan, tombol sosmed -->
-        <div class="menu-panel" id="home">
-            <h2>⛩️ HOME · 真</h2>
-            <p style="font-size:clamp(1.4rem, 6vw, 2.2rem); font-weight:bold; color:#fff; line-height:1.3;">⚡ BEDROCK 玄人サーバー ⚡</p>
-            <p style="font-size:clamp(1rem, 4vw, 1.3rem); max-width:900px; background:#111; padding:1rem; border-left:8px solid #5f5f5f; margin:1rem 0;">
-                 Server mabar Minecraft Bedrock edisi hitam putih. Latensi rendah, vibe klasik. 
-                 墨絵の世界で一緒に遊ぼう！ — support semua device.
-            </p>
-            <!-- tombol sosmed [IG, GITHUB, YT] -->
-            <div class="social-buttons">
-                <a href="#" class="social-btn" target="_blank">📷 IG</a>
-                <a href="#" class="social-btn" target="_blank">🐙 GITHUB</a>
-                <a href="#" class="social-btn" target="_blank">▶ YT</a>
-            </div>
+    <header class="manga-header">
+        <div class="logo-manga">KSTW_SMP</div>
+        <div class="nav-menu">
+            <a href="#home" class="nav-item">HOME</a>
+            <a href="#port" class="nav-item">PORT</a>
+            <a href="#spec" class="nav-item">SPEC</a>
+            <a href="#contact" class="nav-item">CONTACT</a>
         </div>
+    </header>
 
-        <!-- [port] nama server, address dan port -->
-        <div class="menu-panel" id="port">
-            <h2>🔌 PORT · 接続</h2>
-            <div style="background:#151515; padding:1.5rem; border-radius:4px;">
-                <p style="font-size:clamp(1.5rem, 6vw, 2.3rem); font-weight:bold; color:#e0e0e0; word-break:break-word;">⚓ 墨サーバー (Sumi Craft)</p>
-                <div class="server-address">
-                    bedrock.mangalegend.my.id  ·  <span style="color:white;">19132</span>
+    <div class="magazine-layout">
+        <!-- KOLOM KIRI -->
+        <div class="main-panel">
+            <!-- HOME SECTION -->
+            <div class="manga-card" id="home">
+                <div class="card-title">⛩️ HOME</div>
+                <p style="font-size: 2rem; color: var(--text-primary); font-weight: bold;">BEDROCK 墨サーバー</p>
+                <p style="color: var(--text-subtle); font-size: 1.2rem; margin: 1rem 0;">
+                    Server Minecraft Bedrock dengan estetika hitam putih khas manga Jepang. 
+                    Latensi rendah, komunitas solid. Tema putih bersih untuk kenyamanan mata.
+                </p>
+                
+                <!-- MASKOT -->
+                <div class="manga-mascot">
+                    <div class="mascot-image">
+                        <img src="1.png" alt="Mascot Manga" 
+                             onerror="this.onerror=null; this.parentElement.innerHTML='📷 MASKOT<br>1.png'; this.style.display='none';">
+                    </div>
+                    <div class="mascot-text">
+                        "Setiap pixel bercerita<br>tanpa warna - 白黒の世界"
+                    </div>
                 </div>
-                <p style="margin-top:1rem; color:#aaa;">(default bedrock port — langsung join)</p>
-            </div>
-        </div>
 
-        <!-- [specification] spesifikasi server cpu, ram, storage, ping -->
-        <div class="menu-panel" id="spec">
-            <h2>🖥️ SPECIFICATION</h2>
-            <div class="spec-grid">
-                <div class="spec-item"><strong>⚙ CPU</strong> AMD ATHLON SILVER 3050U</div>
-                <div class="spec-item"><strong>⚡ RAM</strong> 12GB</div>
-                <div class="spec-item"><strong>💾 STORAGE</strong> 15GB (SSD)</div>
-                <div class="spec-item"><strong>📶 PING</strong> -+26 ms</div>
-            </div>
-            <p style="margin-top:1.5rem; color:#bbb; font-size:clamp(0.9rem,3.5vw,1.1rem);">* グラフィックはすべて白黒ですが、冒険に色はいらない。レスポンシブ対応。</p>
-        </div>
-
-        <!-- [contact] div1: owner, gmail, feedback. div2: operator list 1.. seterusnya -->
-        <div class="menu-panel" id="contact">
-            <h2>📞 CONTACT</h2>
-            <div class="contact-grid">
-                <!-- kiri: owner & feedback -->
-                <div class="contact-card">
-                    <h3>👤 OWNER / ADMIN</h3>
-                    <p style="font-size:clamp(1.3rem,5vw,1.9rem); font-weight:bold; color:white; word-break:break-word;">⛩️ MangaCraft</p>
-                    <p style="font-size:clamp(1rem,4vw,1.2rem;">📧 owner.manga@kuroshiro.jp</p>
-                    <p style="margin: 1.2rem 0 0.5rem; font-weight:bold;">📝 FEEDBACK</p>
-                    <textarea class="feedback-input" placeholder="tulis kritik/saran di sini... (hitam putih)"></textarea>
+                <div class="social-row">
+                    <a href="#" class="social-btn-manga">📷 IG</a>
+                    <a href="#" class="social-btn-manga">🐙 GITHUB</a>
+                    <a href="#" class="social-btn-manga">▶ YT</a>
                 </div>
-                <!-- kanan: operator list pemain 1 .. seterusnya -->
-                <div class="contact-card">
-                    <h3>🎮 OPERATOR (GAME)</h3>
-                    <ul class="operator-list" id="operatorList">
-                        <!-- diisi javascript -->
-                    </ul>
-                    <p style="margin-top:1rem; color:#aaa; font-size:clamp(0.8rem,3vw,0.95rem);">⚡ admin in-game • update berkala</p>
+            </div>
+
+            <!-- PORT SECTION -->
+            <div class="manga-card" id="port">
+                <div class="card-title">🔌 PORT</div>
+                <p style="font-size: 2rem; color: var(--text-secondary);">⚓ 墨サーバー</p>
+                <div class="ip-box">
+                    server name : KSTW_SMP
+                </div>
+                <div class="ip-box">
+                    address : 192.168.1.1
+                </div>
+                <div class="ip-box">
+                    port : 19132
+                </div>
+                <p style="margin-top: 1rem; color: #555;">Join langsung, port default bedrock</p>
+            </div>
+        </div>
+
+        <!-- KOLOM KANAN -->
+        <div class="sidebar-panel">
+            <!-- SPEC SECTION -->
+            <div class="manga-card" id="spec">
+                <div class="card-title">⚙ SPEC</div>
+                <div class="spec-badge">
+                    <div class="badge"><strong>CPU</strong>AMD ATHLON SILVER 3050U</div>
+                    <div class="badge"><strong>RAM</strong>12GB</div>
+                    <div class="badge"><strong>STORAGE</strong>15GB SSD</div>
+                    <div class="badge"><strong>PING</strong>-+26ms</div>
+                </div>
+                <p style="color: #555;">*spesifikasi cukup untuk 20-30 player</p>
+            </div>
+
+            <!-- CONTACT SECTION -->
+            <div class="manga-card" id="contact">
+                <div class="card-title">📞 CONTACT</div>
+                
+                <!-- OWNER dengan FORM FEEDBACK YANG BENAR UNTUK FORMSPREE -->
+                <div style="background: var(--secondary-bg); padding: 1.5rem; margin-bottom: 1.5rem; border-left: 8px solid var(--border-dark); opacity: var(--badge-opacity);">
+                    <p style="font-size: 1.8rem; color: var(--text-primary); margin-bottom: 0.5rem;">⛩️ KSTW_SMP</p>
+                    <p style="color: var(--text-subtle); margin-bottom: 1.5rem;">owner.rayajidipadinangga@gmail.com</p>
+                    
+                    <!-- FORM FEEDBACK DENGAN STRUKTUR YANG BENAR UNTUK FORMSPREE -->
+                    <!-- PENTING: GANTI action DIBAWAH INI DENGAN ENDPOINT DARI FORMSPREE -->
+                    <form id="feedbackForm" class="feedback-form" action="https://formspree.io/f/xpqykgvd" method="POST">
+                        <!-- Email pengirim (WAJIB untuk Formspree) -->
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Kamu *</label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="contoh: player@email.com" required>
+                        </div>
+                        
+                        <!-- Nama (opsional) -->
+                        <div class="form-group">
+                            <label class="form-label" for="name">Nama Kamu (opsional)</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="Masukkan nama atau nickname">
+                        </div>
+                        
+                        <!-- Pesan feedback -->
+                        <div class="form-group">
+                            <label class="form-label" for="message">Pesan Feedback *</label>
+                            <textarea id="message" name="message" class="feedback-textarea" placeholder="Tulis feedback, saran, atau laporan bug untuk server..." required></textarea>
+                        </div>
+                        
+                        <!-- Hidden field untuk redirect setelah submit (optional) -->
+                        <input type="hidden" name="_subject" value="📩 Feedback Baru dari Website KSTW_SMP">
+                        <input type="hidden" name="_replyto" value="owner.rayajidipadinangga@gmail.com">
+                        
+                        <!-- Tombol kirim -->
+                        <button type="submit" class="submit-btn">📨 KIRIM FEEDBACK</button>
+                    </form>
+                    
+                    <!-- Status pengiriman -->
+                    <div id="formStatus" class="form-status"></div>
+                    
+                    <!-- Informasi kecil -->
+                    <p style="font-size: 0.8rem; color: #666; margin-top: 1rem; text-align: center;">
+                        * Feedback akan dikirim ke email owner
+                    </p>
+                </div>
+                
+                <!-- OPERATOR LIST -->
+                <div>
+                    <p style="font-size: 1.8rem; color: var(--text-primary); border-bottom: 5px solid var(--border-dark); margin-bottom: 1rem;">🎮 OPERATOR</p>
+                    <ul class="operator-list" id="operatorList"></ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- POP-UP GAMBAR POJOK KIRI BAWAH (tidak bisa dihapus/hilang) file "1.png" 595x626 -->
-    <div class="fixed-pop">
-        <img src="1.png" alt="mascot manga" width="595" height="626" loading="lazy">
-    </div>
-
-    <!-- JavaScript ringan untuk isi list operator + smooth scroll -->
     <script>
         (function() {
-            // daftar operator bergaya manga (bisa ditambah)
-            const operatorNames = [
-                "零士 (Reiji)", "冥 (Mei)", "影狼 (Kagerou)", "無常 (Mujou)",
-                "鉄 (Tetsu)", "骸 (Mukuro)", "黒蜜 (KuroMitsu)", "鸦 (Karasu)",
-                "凍牙 (Itoya)", "死武 (ShiBu)", "崩 (Kuzure)", "寂 (Sabi)",
-                "白無垢 (Shiromuku)", "煙 (Kemuri)"
+            // Fallback untuk gambar - cek apakah file ada
+            function checkImage(src) {
+                const img = new Image();
+                img.onload = () => console.log(`✅ Gambar ${src} ditemukan`);
+                img.onerror = () => console.warn(`⚠️ Gambar ${src} TIDAK ditemukan! Pastikan file berada di folder yang sama`);
+                img.src = src;
+            }
+            
+            // Cek semua gambar yang diperlukan
+            checkImage('kstw.jpeg');
+            checkImage('bg.png');
+            checkImage('1.png');
+            
+            // List operator
+            const operators = [
+                "零士 (Reiji) - Owner", 
+                "冥 (Mei) - Admin"
             ];
 
-            const listContainer = document.getElementById('operatorList');
-            if (listContainer) {
-                // tampilkan 1 sampai seterusnya (14 nama pertama)
-                for (let i = 0; i < operatorNames.length; i++) {
+            const list = document.getElementById('operatorList');
+            if (list) {
+                operators.forEach((name, i) => {
                     const li = document.createElement('li');
-                    li.textContent = `${i+1}. ${operatorNames[i]}`;
-                    listContainer.appendChild(li);
-                }
-                // tambahan "dan lainnya" untuk efek tak terbatas
-                const extraLi = document.createElement('li');
-                extraLi.textContent = '... next generation';
-                extraLi.style.fontStyle = 'italic';
-                extraLi.style.color = '#999';
-                listContainer.appendChild(extraLi);
+                    li.textContent = `${i+1}. ${name}`;
+                    list.appendChild(li);
+                });
+                
+                const extra = document.createElement('li');
+                extra.textContent = '... dan lainnya (total 15 operator)';
+                extra.style.fontStyle = 'italic';
+                extra.style.color = '#666';
+                list.appendChild(extra);
             }
 
-            // smooth scroll saat klik navbar (tanpa merusak anchor)
-            const navLinks = document.querySelectorAll('.navbar a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
+            // Smooth scroll
+            document.querySelectorAll('.nav-item').forEach(link => {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1); // #home -> home
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    const id = link.getAttribute('href').substring(1);
+                    const target = document.getElementById(id);
+                    if(target) target.scrollIntoView({behavior: 'smooth'});
+                });
+            });
+
+            // HANDLE FORM FEEDBACK DENGAN AJAX (TANPA RELOAD)
+            const form = document.getElementById('feedbackForm');
+            const statusDiv = document.getElementById('formStatus');
+            
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault(); // Mencegah reload halaman
+                    
+                    // Validasi sederhana
+                    const email = document.getElementById('email')?.value;
+                    const message = document.getElementById('message')?.value;
+                    
+                    if (!email || !message) {
+                        statusDiv.innerHTML = '❌ Email dan pesan harus diisi!';
+                        statusDiv.className = 'form-status error';
+                        return;
+                    }
+                    
+                    // Tampilkan status loading
+                    statusDiv.innerHTML = '⏳ Mengirim feedback...';
+                    statusDiv.className = 'form-status';
+                    
+                    // Ambil data form
+                    const formData = new FormData(form);
+                    
+                    // Tambahkan data tambahan
+                    formData.append('_gotcha', ''); // Anti-spam
+                    
+                    try {
+                        // Kirim ke Formspree menggunakan fetch API
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            // Sukses
+                            statusDiv.innerHTML = '✅ Feedback terkirim! Terima kasih atas masukannya.';
+                            statusDiv.className = 'form-status success';
+                            form.reset(); // Kosongkan form
+                            
+                            // Log untuk debugging
+                            console.log('Feedback berhasil dikirim');
+                            
+                            // Sembunyikan pesan setelah 5 detik
+                            setTimeout(() => {
+                                statusDiv.innerHTML = '';
+                                statusDiv.className = 'form-status';
+                            }, 5000);
+                        } else {
+                            // Error dari server
+                            const data = await response.json();
+                            if (data.errors) {
+                                statusDiv.innerHTML = '❌ Gagal mengirim: ' + data.errors.map(e => e.message).join(', ');
+                            } else {
+                                throw new Error('Gagal mengirim feedback');
+                            }
+                            statusDiv.className = 'form-status error';
+                        }
+                    } catch (error) {
+                        // Error jaringan
+                        console.error('Error:', error);
+                        statusDiv.innerHTML = '❌ Gagal mengirim. Periksa koneksi internet Anda.';
+                        statusDiv.className = 'form-status error';
+                        
+                        // Sembunyikan pesan error setelah 5 detik
+                        setTimeout(() => {
+                            statusDiv.innerHTML = '';
+                            statusDiv.className = 'form-status';
+                        }, 5000);
                     }
                 });
-            });
+            }
 
-            // opsional: menyesuaikan tinggi textarea (hanya UX)
-            const textareas = document.querySelectorAll('.feedback-input');
-            textareas.forEach(ta => {
-                ta.addEventListener('input', function() {
-                    this.style.height = 'auto';
-                    this.style.height = (this.scrollHeight) + 'px';
-                });
-            });
+            // Tambahkan petunjuk untuk setup Formspree
+            console.log('📧 Formspree Feedback System Aktif!');
+            console.log('⚠️ PENTING: JANGAN LUPA GANTI ACTION FORM DENGAN ENDPOINT FORMSPREE!');
+            console.log('📝 Cara setup:');
+            console.log('1. Buka https://formspree.io');
+            console.log('2. Daftar/Login');
+            console.log('3. Klik "New Form"');
+            console.log('4. Masukkan email tujuan: owner.rayajidipadinangga@gmail.com');
+            console.log('5. Copy endpoint URL (https://formspree.io/f/xxxxxx)');
+            console.log('6. Paste ke action form di HTML');
+            
         })();
     </script>
-
-    <!-- catatan: gambar yg diperlukan: kstw.jpeg (favicon), bg.png (background), 1.png (pop up) -->
-    <!-- semua device tercover: monitor, laptop, hp baru, dengan css clamp, grid, viewport -->
+    
+    <!-- Footer note untuk setup -->
+    <div style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; font-size: 12px; border-radius: 5px; z-index: 1000;">
+        ⚡ Feedback ke owner.rayajidipadinangga@gmail.com
+    </div>
 </body>
 </html>
